@@ -1,4 +1,4 @@
-import { Controller,Get, Post, Put,Patch,Delete} from "@nestjs/common";
+import { Controller,Get, Post, Put,Patch,Delete, Param} from "@nestjs/common";
 
 
 @Controller('students')
@@ -7,10 +7,21 @@ export class StudentController{
 getStudents(){
     return "All students data"
 }
+// @Get("/:studentId")
+// getStudentsById(
+//   @Param() params:{studentId:string}  
+// ){
+//     const {studentId}=params;
+//     return `Get Single Student By ${studentId}`
+// }
+
 @Get("/:studentId")
-getStudentsById(){
-    return "Get Single Student By ID"
+getStudentsById(
+  @Param("studentId") studentId:string  
+){
+    return `Get Single Student By ${studentId}`
 }
+
 
 @Post()
 createStudents(){
