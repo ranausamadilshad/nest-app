@@ -1,50 +1,63 @@
-import { Controller,Get, Post, Put,Patch,Delete, Param, Body} from "@nestjs/common";
-import { CreateStudentDto, UpdateStudentDto } from "./dto/student.dto";
-
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Patch,
+  Delete,
+  Param,
+  Body,
+} from '@nestjs/common';
+import {
+  CreateStudentDto,
+  UpdateStudentDto,
+  StudentResponseDto,
+  FindStudentResponseDto,
+} from './dto/student.dto';
+import { StudentService } from './student.service';
 
 @Controller('students')
-export class StudentController{
-@Get()
-getStudents(){
-    return "All students data"
-}
-// @Get("/:studentId")
-// getStudentsById(
-//   @Param() params:{studentId:string}  
-// ){
-//     const {studentId}=params;
-//     return `Get Single Student By ${studentId}`
-// }
+export class StudentController {
+  constructor(private readonly studentService: StudentService) {}
 
-@Get("/:studentId")
-getStudentsById(
-  @Param("studentId") studentId:string  
-){
-    return `Get Single Student By ${studentId}`
-}
+  // All Students
 
+  @Get()
+  getStudents(): FindStudentResponseDto[] {
+    return this.studentService.getStudents();
+  }
 
-@Post()
-createStudents(
-    @Body() body : CreateStudentDto
-){
-    return `Post Request Students with data ${JSON.stringify(body)}`
-}
+  // Single Student
 
-@Put("/:studentId")
-updateStudent(
-    @Param("studentId") studentId:string,
-    @Body() body :UpdateStudentDto
-){
-    return `Update Students By Id ${studentId} with data ${body} `
-}
+  @Get('/:studentId')
+  getStudentById(
+    @Param('studentId') studentId: string,
+  ): FindStudentResponseDto {
+    return this.studentService.getStudentById(studentId);
+  }
 
-@Patch("/:studentId")
-updateStudentPost(){
-    return "Update Student By Id Post"
-}
-@Delete("/:studentId")
-deleteStudent(){
-    return "Delete Student"
-}
+  @Post()
+  createStudent(@Body() body: CreateStudentDto): StudentResponseDto {
+    return this.studentService.createStudent(body);
+  }
+
+  @Put('/:studentId')
+  updateStudent(
+    @Param('studentId') studentId: string,
+    @Body() body: UpdateStudentDto,
+  ): StudentResponseDto {
+    return this.studentService.updatedStudent(body, studentId);
+  }
+
+  @Patch('/:studentId')
+  updateStudentPost(
+    @Param('studentId') studentId: string,
+    @Body() body: UpdateStudentDto,
+  ): StudentResponseDto {
+    return this.studentService.updatedStudent(body, studentId);
+  }
+  // @Delete("/:studentId")
+  // deleteStudent():StudentResponseDto{
+  //     return "Delete Student"
+  // }
 }
