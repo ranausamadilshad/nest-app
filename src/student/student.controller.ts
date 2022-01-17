@@ -7,6 +7,7 @@ import {
   Delete,
   Param,
   Body,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   CreateStudentDto,
@@ -31,7 +32,7 @@ export class StudentController {
 
   @Get('/:studentId')
   getStudentById(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
   ): FindStudentResponseDto {
     return this.studentService.getStudentById(studentId);
   }
@@ -43,7 +44,7 @@ export class StudentController {
 
   @Put('/:studentId')
   updateStudent(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
     @Body() body: UpdateStudentDto,
   ): StudentResponseDto {
     return this.studentService.updatedStudent(body, studentId);
@@ -51,7 +52,7 @@ export class StudentController {
 
   @Patch('/:studentId')
   updateStudentPost(
-    @Param('studentId') studentId: string,
+    @Param('studentId', new ParseUUIDPipe()) studentId: string,
     @Body() body: UpdateStudentDto,
   ): StudentResponseDto {
     return this.studentService.updatedStudent(body, studentId);
